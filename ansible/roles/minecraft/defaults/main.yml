@@ -1,0 +1,18 @@
+---
+minecraft_server: minecraft
+minecraft_url: https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+
+minecraft_user: "{{ minecraft_server }}"
+minecraft_group: "{{ minecraft_server }}"
+
+minecraft_home: /app/{{ minecraft_server }}
+minecraft_jar: minecraft_server.jar
+
+minecraft_max_memory: 1024M
+minecraft_initial_memory: 1024M
+
+minecraft_service_name: "{{ minecraft_server }}"
+minecraft_supervisor_name: "{{ minecraft_service_name }}"
+
+minecraft_console_fifo: /run/{{ minecraft_service_name }}/console
+minecraft_console_fifo_mode: '0666'

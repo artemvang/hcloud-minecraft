@@ -1,0 +1,47 @@
+---
+
+- name: "Install Minecraft requirements"
+  apt:
+    name: "{{ requirements }}"
+    state: present
+  vars:
+    requirements:
+      - openjdk-8-jdk
+
+- name: "Download Minecraft server"
+  get_url:
+    url: "{{ minecraft_url }}"
+    dest: "{{ minecraft_home }}/{{ minecraft_jar }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+
+- name: "Agree to EULA"
+  copy:
+    src: eula.txt
+    dest: "{{ minecraft_home }}/eula.txt"
+    mode: '0644'
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+
+
+- name: "Install systemd units"
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item | replace('minecraft', minecraft_service_name) }}"
+    owner: minecraft
+    group: minecraft
+    mode: '0644'
+  with_items:
+    - minecraft.service
+    - minecraft.socket
+
+- name: "Enable and run systemd units"
+  systemd:
+    daemon_reload: yes
+    name: "{{ item }}"
+    enabled: True
+    state: started 
+  with_items:
+    - minecraft.service
+    - minecraft.socket
