@@ -1,6 +1,7 @@
 ---
 
 - name: "Run apt update/upgrade/install"
+  become: yes
   tags:
     - provision
     - provision-requirements
@@ -29,6 +30,7 @@
           - ufw
 
 - name: "Install python packages"
+  become: yes
   hosts: minecraft
   tags:
     - provision
@@ -41,6 +43,7 @@
           - pexpect
 
 - name: "Setup users"
+  become: yes
   tags:
     - provision
     - provision-users
@@ -62,6 +65,7 @@
         shell: /bin/bash
 
 - name: "Setup firewall"
+  become: yes
   tags:
     - provision
     - provision-security
@@ -101,6 +105,7 @@
         logging: "off"
 
 - name: "Set timezone"
+  become: yes
   tags:
     - provision
     - provision-timezone
@@ -110,6 +115,7 @@
       command: timedatectl set-timezone UTC
 
 - name: "Install Minecraft"
+  become: yes
   tags:
     - minecraft
     - minecraft-install
