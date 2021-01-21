@@ -56,15 +56,3 @@ variable "ssh_key_name" {
   description = "SSH key name"
   default     = "artemvang@kecyk.com"
 }
-
-variable "ssh_private_name" {
-  type        = string
-  description = "public SSH key"
-  default     = "./ssh_keys/id_hcloud_minecraft"
-}
-
-variable "ssh_public_key" {
-  type        = string
-  description = "Admin SSH key"
-  default     = "./ssh_keys/id_hcloud_minecraft.pub"
-}
