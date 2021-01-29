@@ -11,9 +11,14 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
+resource "tls_private_key" "ssh" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "hcloud_ssh_key" "admin" {
   name       = var.ssh_key_name
-  public_key = file(var.ssh_public_key)
+  public_key = tls_private_key.ssh.public_key_openssh
 }
 
 resource "hcloud_server" "minecraft_server" {
@@ -52,4 +57,15 @@ resource "local_file" "ansible_inventory" {
     }
   )
   filename = "./ansible/inventory"
+}
+
+resource "local_file" "private_ssh_key" {
+  content = tls_private_key.ssh.private_key_pem
+  file_permission = "0600"
+  filename = "./ssh_keys/id_key"
+}
+
+resource "local_file" "public_ssh_key" {
+  content = tls_private_key.ssh.public_key_openssh
+  filename = "./ssh_keys/id_key.pub"
 }
