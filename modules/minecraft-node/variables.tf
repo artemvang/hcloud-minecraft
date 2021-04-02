@@ -41,7 +41,7 @@ variable "subnetwork_ip_range" {
 }
 
 variable "server_local_ip" {
-  type = string
+  type        = string
   description = "Server IP addres in subnetwork"
   default     = "10.0.0.2"
 }
@@ -54,5 +54,5 @@ variable "hcloud_token" {
 variable "ssh_key_name" {
   type        = string
   description = "SSH key name"
-  default     = "artemvang@kecyk.com"
+  default     = "artemvang@kecyk.space"
 }
