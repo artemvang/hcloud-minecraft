@@ -28,7 +28,7 @@ resource "hcloud_server" "minecraft_server" {
   ssh_keys    = [hcloud_ssh_key.admin.id]
 
   labels = {
-    Name = "minecraft-${var.server_name}-${terraform.workspace}"
+    Name = "${var.server_name}-${terraform.workspace}"
   }
 }
 
