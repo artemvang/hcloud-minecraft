@@ -1,2 +1,2 @@
 # terraform-minecraft
-Simple terraform and ansible configuration for Minecraft server test
+Simple terraform and ansible configuration for Minecraft server
